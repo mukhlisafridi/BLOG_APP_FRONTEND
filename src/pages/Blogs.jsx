@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import HeroSection from "../components/HeroSection";
-import { blogData } from "../assets/assets";
 import BlogCard from "../components/BlogCard";
+import { StoreContext } from "../context/StoreContext";
 
 const Blogs = () => {
+  const{blogData} = useContext(StoreContext)
   return (
     <>
       <div className="w-full">

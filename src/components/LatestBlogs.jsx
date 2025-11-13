@@ -1,9 +1,10 @@
-import React from 'react';
-import { blogData } from "../assets/assets";
+import React, { useContext } from 'react';
 import BlogCard from './BlogCard';
+import {StoreContext} from '../context/StoreContext';
 
 const LatestBlogs = () => {
-  return (
+  const{blogData} = useContext(StoreContext)
+return (
     <div className="my-8 container mx-auto px-4 sm:px-6 lg:px-8">
       <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 text-center sm:text-left mb-6">
         Latest Blogs

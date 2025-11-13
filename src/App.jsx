@@ -9,9 +9,11 @@ import SingleBlog from './pages/SingleBlog'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import Footer from './components/Footer'
+import StoreContextProvider from './context/StoreContext'
 const App = () => {
   return (
     <>
+    <StoreContextProvider>
      <BrowserRouter>
        <Navbar/>
      <Routes>
@@ -25,6 +27,7 @@ const App = () => {
      </Routes>
      <Footer/>
      </BrowserRouter>
+     </StoreContextProvider>
     </>
   )
 }
