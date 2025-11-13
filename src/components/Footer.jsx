@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="flex flex-col md:flex-row flex-wrap py-12 px-4 md:px-8 lg:px-16 justify-between gap-8 bg-gray-50 text-gray-700">
         {/* About Section */}
         <div className="w-full md:w-1/3 flex flex-col items-center md:items-start gap-3 text-center md:text-left">
-          <h1 className="text-2xl font-bold">About</h1>
+          <h1 className="text-2xl font-bold">Meta Blog</h1>
           <p className="text-sm leading-relaxed">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum enim
             mollitia voluptates natus vitae, dignissimos saepe sequi voluptatum.
