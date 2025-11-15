@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="flex flex-col md:flex-row flex-wrap py-12 px-4 md:px-8 lg:px-16 justify-between gap-8 bg-gray-50 text-gray-700">
         {/* About Section */}
         <div className="w-full md:w-1/3 flex flex-col items-center md:items-start gap-3 text-center md:text-left">
-          <h1 className="text-2xl font-bold">Meta Blog</h1>
+          <h1 className="text-2xl font-bold cursor-pointer hover:text-orange-600 ">Meta Blog</h1>
           <p className="text-sm leading-relaxed">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum enim
             mollitia voluptates natus vitae, dignissimos saepe sequi voluptatum.
@@ -24,28 +24,28 @@ const Footer = () => {
 
         {/* Quick Links */}
         <div className="w-full sm:w-1/2 md:w-1/4 flex flex-col items-center md:items-start">
-          <h1 className="text-2xl font-bold mb-4">Quick Links</h1>
+          <h1 className="text-2xl font-bold mb-4  cursor-pointer hover:text-orange-600">Quick Links</h1>
           <ul className="flex flex-col gap-2 text-sm sm:text-base">
             <Link
-              className="hover:text-black text-gray transition-all duration-200"
+              className="hover:text-orange-600 text-black transition-all duration-200"
               to="/"
             >
               Home
             </Link>
             <Link
-              className="hover:text-black text-gray transition-all duration-200"
+              className="hover:text-orange-600 text-black transition-all duration-200"
               to="/blogs"
             >
               Blogs
             </Link>
             <Link
-              className="hover:textblack text-gray transition-all duration-200"
+              className="hover:text-orange-600 text-black transition-all duration-200"
               to="/about"
             >
               About
             </Link>
             <Link
-              className="hover:text-black text-gray transition-all duration-200"
+              className="hover:text-orange-600 text-black transition-all duration-200"
               to="/contact"
             >
               Contact
@@ -55,18 +55,18 @@ const Footer = () => {
 
         {/* Categories */}
         <div className="w-full sm:w-1/2 md:w-1/4 flex flex-col items-center md:items-start">
-          <h1 className="text-2xl font-bold mb-4">Categories</h1>
+          <h1 className="text-2xl font-bold mb-4  cursor-pointer hover:text-orange-600">Categories</h1>
           <ul className="flex flex-col gap-2 text-sm sm:text-base">
-            <Link className="hover:text-blue-600 transition-all duration-200">
+            <Link className="hover:text-orange-600 transition-all duration-200">
               Weather
             </Link>
-            <Link className="hover:text-blue-600 transition-all duration-200">
+            <Link className="hover:text-orange-600 transition-all duration-200">
               Lifestyle
             </Link>
-            <Link className="hover:text-blue-600 transition-all duration-200">
+            <Link className="hover:text-orange-600 transition-all duration-200">
               Technology
             </Link>
-            <Link className="hover:text-blue-600 transition-all duration-200">
+            <Link className="hover:text-orange-600 transition-all duration-200">
               News
             </Link>
           </ul>
@@ -79,14 +79,14 @@ const Footer = () => {
         <div className="flex items-center gap-2">
           <img src={assets.logo} alt="Logo" className="w-8 h-8" />
           <p className="text-base font-medium">
-            Meta <span className="font-bold text-blue-600 ">Blog</span>
+            Meta <span className="font-bold cursor-pointer text-orange-600 ">Blog</span>
           </p>
         </div>
         <ul className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-center">
-          <li className="hover:text-blue-600 transition-all duration-200 cursor-pointer">
+          <li className="hover:text-orange-600  transition-all duration-200 cursor-pointer">
             Privacy Policy
           </li>
-          <li className="hover:text-blue-600 transition-all duration-200 cursor-pointer">
+          <li className="hover:text-orange-600 transition-all duration-200 cursor-pointer">
             Terms & Conditions
           </li>
           <li className="text-gray-500 text-xs sm:text-sm">

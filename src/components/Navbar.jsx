@@ -10,16 +10,18 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="container mx-auto flex justify-between items-center p-4">
-        {/* Logo */}
+     
+      <div className="container mx-auto flex justify-between items-center p-4 cursor-pointer">
+         <Link to="/">
         <div className="flex gap-2 items-center">
-          <Link to="/">
+          
             <img src={assets.logo} alt="logo" className="h-10 w-auto" />
-          </Link>
+         
           <p className="hidden sm:block text-2xl">
             Meta <span className="font-bold text-2xl">Blog</span>
           </p>
         </div>
+         </Link>
 
         {/* Desktop Menu */}
         <ul className="hidden sm:flex gap-6 text-lg font-medium text-gray-700">

@@ -10,11 +10,13 @@ import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import Footer from './components/Footer'
 import StoreContextProvider from './context/StoreContext'
+import {Toaster} from "react-hot-toast"
 const App = () => {
   return (
     <>
     <StoreContextProvider>
      <BrowserRouter>
+     <Toaster/>
        <Navbar/>
      <Routes>
       <Route path="/" element={<Home/>} />
