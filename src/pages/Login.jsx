@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { StoreContext } from "../context/StoreContext";
 const Login = () => {
+  const { loginUser } = useContext(StoreContext);
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -24,6 +26,8 @@ const Login = () => {
         formData
       );
       if (res.data.success) {
+        const { user, token } = res.data;
+        loginUser(user, token);
         toast.success(res.data.message);
       }
       navigate("/");

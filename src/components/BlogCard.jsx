@@ -15,7 +15,7 @@ const BlogCard = ({
       
       <Link to={`/blog/${id}`} className="overflow-hidden">
         <img
-          src={image}
+           src={`http://localhost:3000/images/${image}`}
           alt={title}
           className="w-full h-48 object-cover cursor-pointer transform transition-transform duration-300 group-hover:scale-110"
         />
@@ -38,7 +38,7 @@ const BlogCard = ({
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <img
               className="w-8 h-8 rounded-full object-cover flex-shrink-0"
-              src={author_image}
+              src={`http://localhost:3000/images/${author_image}`}
               alt={author_name}
             />
             <p className="text-sm font-semibold text-gray-700">
@@ -46,7 +46,11 @@ const BlogCard = ({
             </p>
             <span className="hidden sm:inline text-gray-400">•</span>
             <p className="text-xs sm:text-sm text-gray-500">
-              {date}
+             {new Date(date).toLocaleDateString("en-US", {
+             year: "numeric",
+             month: "short",
+             day: "numeric",
+              })}
             </p>
           </div>
         </div>

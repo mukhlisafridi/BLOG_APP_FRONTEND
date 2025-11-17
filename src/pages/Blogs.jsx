@@ -22,13 +22,13 @@ const Blogs = () => {
             {blogData.map((blog, index) => (
               <BlogCard
                 key={index}
-                id={blog.id}
+                id={blog._id}
                 title={blog.title}
                 image={blog.image}
                 category={blog.category}
                 author_name={blog.author.name}
                 author_image={blog.author.image}
-                date={blog.date}
+                date={blog.createdAt}
               />
             ))}
           </div>

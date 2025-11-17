@@ -1,27 +1,26 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { StoreContext } from "../context/StoreContext";
 
 const Navbar = () => {
-  const [user, setUser] = useState(false);
+  const { user, logoutUser } = useContext(StoreContext);
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
-     
       <div className="container mx-auto flex justify-between items-center p-4 cursor-pointer">
-         <Link to="/">
-        <div className="flex gap-2 items-center">
-          
+        <Link to="/">
+          <div className="flex gap-2 items-center">
             <img src={assets.logo} alt="logo" className="h-10 w-auto" />
-         
-          <p className="hidden sm:block text-2xl">
-            Meta <span className="font-bold text-2xl">Blog</span>
-          </p>
-        </div>
-         </Link>
+
+            <p className="hidden sm:block text-2xl">
+              Meta <span className="font-bold text-2xl">Blog</span>
+            </p>
+          </div>
+        </Link>
 
         {/* Desktop Menu */}
         <ul className="hidden sm:flex gap-6 text-lg font-medium text-gray-700">
@@ -39,7 +38,6 @@ const Navbar = () => {
           </Link>
         </ul>
 
-        {/* User Buttons (Desktop) */}
         <div className="hidden sm:flex items-center gap-3">
           {user ? (
             <>
@@ -49,7 +47,10 @@ const Navbar = () => {
               >
                 Dashboard
               </Link>
-              <button className="bg-orange-500 text-white px-5 py-2 rounded-full hover:bg-orange-600 duration-300">
+              <button
+                onClick={logoutUser}
+                className="bg-orange-500 text-white px-5 py-2 rounded-full hover:bg-orange-600 duration-300"
+              >
                 Logout
               </button>
             </>
@@ -63,7 +64,6 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Hamburger Button (Mobile) */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="sm:hidden text-gray-800"
@@ -71,12 +71,9 @@ const Navbar = () => {
           {menuOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
-
-      {/* ✅ Right-Side Slide-in Mobile Menu */}
       <AnimatePresence>
         {menuOpen && (
           <>
-            {/* Background Overlay */}
             <motion.div
               key="overlay"
               initial={{ opacity: 0 }}
@@ -86,8 +83,6 @@ const Navbar = () => {
               className="fixed inset-0 bg-black z-40"
               onClick={() => setMenuOpen(false)}
             />
-
-            {/* Drawer */}
             <motion.div
               key="drawer"
               initial={{ x: "100%" }}
@@ -96,7 +91,6 @@ const Navbar = () => {
               transition={{ type: "tween", duration: 0.4 }}
               className="fixed top-0 right-0 h-full w-3/4 max-w-xs bg-white shadow-xl z-50 flex flex-col gap-6 p-6"
             >
-              {/* Close Button */}
               <div className="flex justify-end">
                 <button
                   onClick={() => setMenuOpen(false)}
@@ -105,8 +99,6 @@ const Navbar = () => {
                   <X size={26} />
                 </button>
               </div>
-
-              {/* Menu Links */}
               <Link
                 to="/"
                 onClick={() => setMenuOpen(false)}
@@ -135,8 +127,6 @@ const Navbar = () => {
               >
                 Contact
               </Link>
-
-              {/* User Buttons (Mobile) */}
               {user ? (
                 <>
                   <Link
@@ -147,7 +137,10 @@ const Navbar = () => {
                     Dashboard
                   </Link>
                   <button
-                    onClick={() => setMenuOpen(false)}
+                    onClick={() => {
+                      setMenuOpen(false);
+                      logoutUser();
+                    }}
                     className="bg-orange-500 text-white px-5 py-2 rounded-full hover:bg-orange-600 duration-300"
                   >
                     Logout

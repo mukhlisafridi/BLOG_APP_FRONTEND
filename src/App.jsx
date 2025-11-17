@@ -11,6 +11,7 @@ import SignUp from './pages/SignUp'
 import Footer from './components/Footer'
 import StoreContextProvider from './context/StoreContext'
 import {Toaster} from "react-hot-toast"
+import Dashboard from './pages/Dashboard'
 const App = () => {
   return (
     <>
@@ -26,6 +27,7 @@ const App = () => {
       <Route path="/blog/:id" element={<SingleBlog/>} />
       <Route path="/login" element={<Login/>} />
       <Route path="/register" element={<SignUp/>} />
+      <Route path="/dashoard" element={<Dashboard/>}/>
      </Routes>
      <Footer/>
      </BrowserRouter>
