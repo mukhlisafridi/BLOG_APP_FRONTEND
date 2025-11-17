@@ -4,9 +4,7 @@ import React from "react";
 const Footer = () => {
   return (
     <>
-      {/* Main Footer Section */}
       <div className="flex flex-col md:flex-row flex-wrap py-12 px-4 md:px-8 lg:px-16 justify-between gap-8 bg-gray-50 text-gray-700">
-        {/* About Section */}
         <div className="w-full md:w-1/3 flex flex-col items-center md:items-start gap-3 text-center md:text-left">
           <h1 className="text-2xl font-bold cursor-pointer hover:text-orange-600 ">Meta Blog</h1>
           <p className="text-sm leading-relaxed">
@@ -21,8 +19,6 @@ const Footer = () => {
             Phone: <span className="font-medium">1234567890</span>
           </h4>
         </div>
-
-        {/* Quick Links */}
         <div className="w-full sm:w-1/2 md:w-1/4 flex flex-col items-center md:items-start">
           <h1 className="text-2xl font-bold mb-4  cursor-pointer hover:text-orange-600">Quick Links</h1>
           <ul className="flex flex-col gap-2 text-sm sm:text-base">
@@ -52,8 +48,6 @@ const Footer = () => {
             </Link>
           </ul>
         </div>
-
-        {/* Categories */}
         <div className="w-full sm:w-1/2 md:w-1/4 flex flex-col items-center md:items-start">
           <h1 className="text-2xl font-bold mb-4  cursor-pointer hover:text-orange-600">Categories</h1>
           <ul className="flex flex-col gap-2 text-sm sm:text-base">

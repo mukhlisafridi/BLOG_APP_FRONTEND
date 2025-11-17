@@ -1,13 +1,20 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; 
 import { assets } from "../assets/assets";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { StoreContext } from "../context/StoreContext";
+import toast from "react-hot-toast";  
 
 const Navbar = () => {
   const { user, logoutUser } = useContext(StoreContext);
+  const navigate = useNavigate(); 
   const [menuOpen, setMenuOpen] = useState(false);
+  const handleLogout = () => {
+    logoutUser();
+    toast.success("Logged out successfully!");
+    navigate("/"); 
+  };
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -15,7 +22,6 @@ const Navbar = () => {
         <Link to="/">
           <div className="flex gap-2 items-center">
             <img src={assets.logo} alt="logo" className="h-10 w-auto" />
-
             <p className="hidden sm:block text-2xl">
               Meta <span className="font-bold text-2xl">Blog</span>
             </p>
@@ -48,7 +54,7 @@ const Navbar = () => {
                 Dashboard
               </Link>
               <button
-                onClick={logoutUser}
+                onClick={handleLogout}  
                 className="bg-orange-500 text-white px-5 py-2 rounded-full hover:bg-orange-600 duration-300"
               >
                 Logout
@@ -71,6 +77,7 @@ const Navbar = () => {
           {menuOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
+
       <AnimatePresence>
         {menuOpen && (
           <>
@@ -132,14 +139,14 @@ const Navbar = () => {
                   <Link
                     to="/dashboard"
                     onClick={() => setMenuOpen(false)}
-                    className="bg-black text-white px-5 py-2 rounded-full hover:bg-gray-800 duration-300"
+                    className="bg-black text-white px-5 py-2 rounded-full hover:bg-gray-800 duration-300 text-center"
                   >
                     Dashboard
                   </Link>
                   <button
                     onClick={() => {
                       setMenuOpen(false);
-                      logoutUser();
+                      handleLogout();
                     }}
                     className="bg-orange-500 text-white px-5 py-2 rounded-full hover:bg-orange-600 duration-300"
                   >
@@ -150,7 +157,7 @@ const Navbar = () => {
                 <Link
                   to="/login"
                   onClick={() => setMenuOpen(false)}
-                  className="bg-orange-500 text-white px-6 py-2 rounded-full hover:bg-orange-600 duration-300"
+                  className="bg-orange-500 text-white px-6 py-2 rounded-full hover:bg-orange-600 duration-300 text-center"
                 >
                   Signin
                 </Link>
@@ -163,4 +170,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar

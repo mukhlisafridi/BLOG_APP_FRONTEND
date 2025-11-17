@@ -13,8 +13,6 @@ const SingleBlog = () => {
 
   return (
     <div className="max-w-3xl mx-auto py-16 px-4 sm:px-6 flex flex-col gap-6 bg-white rounded-xl shadow-lg">
-
-      {/* Blog Image — Updated */}
       <div className="w-full h-72 sm:h-96 overflow-hidden rounded-lg shadow-md">
         <img
           src={`http://localhost:3000/images/${blog.image}`}
@@ -57,8 +55,6 @@ const SingleBlog = () => {
             })}
           </p>
         </div>
-
-        {/* Back Button */}
         <Link
           to="/blogs"
           className="mt-6 px-4 py-2 rounded-full bg-black text-white hover:bg-orange-600 transition-colors duration-300 w-fit text-sm sm:text-base"

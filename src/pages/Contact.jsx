@@ -4,7 +4,6 @@ const Contact = () => {
   return (
     <div className="px-4 sm:px-10 md:px-20 pb-20 pt-20">
       <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10">
-        {/* Left Side - Text Section */}
         <div className="md:w-1/2 text-center md:text-left">
           <h1 className="text-3xl uppercase font-bold my-4 text-orange-600">
             Contact
