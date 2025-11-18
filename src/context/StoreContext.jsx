@@ -16,16 +16,17 @@ const StoreContextProvider = ({ children }) => {
           setBlogData(res.data.blogs);
         }
       } catch (error) {
-        console.log(`error in fetching blogs ${error}`);
+        console.error(" Error fetching blogs:", error);
       }
     };
     allBlogs();
   }, []);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("user")
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const userData = JSON.parse(storedUser)
+      setUser(userData);
     }
   }, []);
 
@@ -39,7 +40,7 @@ const StoreContextProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    return true;  
+    return true;
   };
 
   const contextValue = { blogData, loginUser, logoutUser, user };
