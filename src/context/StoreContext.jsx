@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import API from "../utils/axios.js";
-
+import React from "react";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = ({ children }) => {

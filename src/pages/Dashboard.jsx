@@ -1,21 +1,19 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { PlusCircle, List, Trash2, ImageIcon } from "lucide-react";
 import API from "../utils/axios.js";
+
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("list");
-  
-
   const [formData, setFormData] = useState({
     title: "",
     category: "",
     description: "",
     image: null,
   });
-
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,6 +23,11 @@ const Dashboard = () => {
     const file = e.target.files[0];
     if (file) {
       setFormData({ ...formData, image: file });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -42,16 +45,20 @@ const Dashboard = () => {
     }
 
     try {
-      const res = await API.post("/blog/create", data);
+      const res = await API.post("/blog/create", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       toast.success(res.data.message);
       setBlogs([res.data.blog, ...blogs]);
       setFormData({ title: "", category: "", description: "", image: null });
-
-     
+      setImagePreview(null);
       setActiveTab("list");
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
+      console.error("Submit error:", error);
+      toast.error(error.response?.data?.message || "Failed to create blog");
     } finally {
       setLoading(false);
     }
@@ -61,25 +68,23 @@ const Dashboard = () => {
     const getUserBlogs = async () => {
       try {
         const res = await API.get("/blog/user-blogs");
-        setBlogs(res.data.blogs);
+        setBlogs(res.data.blogs || []);
       } catch (error) {
-        toast.error("Failed to fetch blogs");
+        console.error("Fetch blogs error:", error);
       }
     };
     getUserBlogs();
-  }, [token]);
+  }, []);
 
   const removeBlog = async (blogId) => {
     try {
-      const res = await API.delete(
-        `/blog/delete-blog/${blogId}`);
+      const res = await API.delete(`/blog/delete-blog/${blogId}`);
       toast.success(res.data.message);
       setBlogs(blogs.filter((b) => b._id !== blogId));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to delete blog");
     }
   };
-
   const ImagePlaceholder = () => (
     <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center">
       <ImageIcon className="text-white" size={24} />
@@ -114,7 +119,6 @@ const Dashboard = () => {
             <List size={20} /> My Blogs
           </button>
         </div>
-
         {activeTab === "post" ? (
           <div className="bg-white p-6 md:p-8 shadow-lg rounded-xl">
             <h2 className="text-2xl md:text-3xl font-bold text-orange-600 mb-6">
@@ -171,27 +175,56 @@ const Dashboard = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Upload Image
+                  Upload Image (Optional)
                 </label>
                 <input
                   onChange={fileHandler}
                   type="file"
                   accept="image/*"
-                  className="border border-gray-300 rounded-lg p-3 w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
+                  className="border border-gray-300 rounded-lg p-3 w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer"
                 />
-                {formData.image && (
-                  <p className="text-sm text-gray-600 mt-2">
-                    {formData.image.name}
-                  </p>
+                {imagePreview && (
+                  <div className="mt-3">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="w-32 h-32 object-cover rounded-lg border-2 border-orange-200"
+                    />
+                  </div>
                 )}
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg font-semibold transition disabled:bg-orange-400 disabled:cursor-not-allowed"
+                className="bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg font-semibold transition disabled:bg-orange-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {loading ? "Posting..." : "Post Blog"}
+                {loading ? (
+                  <>
+                    <svg
+                      className="animate-spin h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Posting...
+                  </>
+                ) : (
+                  "Post Blog"
+                )}
               </button>
             </form>
           </div>
@@ -203,6 +236,7 @@ const Dashboard = () => {
 
             {blogs.length === 0 ? (
               <div className="text-center py-12">
+                <ImageIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <p className="text-gray-500 text-lg">No blogs yet</p>
                 <p className="text-gray-400 text-sm mt-2">
                   Create your first blog!
@@ -231,14 +265,18 @@ const Dashboard = () => {
 
                     <tbody>
                       {blogs.map((blog) => (
-                        <tr key={blog._id} className="hover:bg-gray-50 transition">
+                        <tr
+                          key={blog._id}
+                          className="hover:bg-gray-50 transition border-b"
+                        >
                           <td className="px-3 sm:px-4 py-3">
                             {blog.image ? (
                               <img
                                 src={blog.image}
                                 alt={blog.title}
-                                className="w-12 h-12 sm:w-14 sm:h-14 object-cover rounded-lg border cursor-pointer hover:scale-105 transition-transform"
+                                className="w-12 h-12 sm:w-14 sm:h-14 object-cover rounded-lg border shadow-sm"
                                 onError={(e) => {
+                                  e.target.onerror = null;
                                   e.target.style.display = "none";
                                   e.target.nextSibling.style.display = "flex";
                                 }}
@@ -251,8 +289,10 @@ const Dashboard = () => {
                             </div>
                           </td>
 
-                          <td className="px-3 sm:px-4 py-3 font-medium text-xs sm:text-sm text-gray-900 max-w-xs truncate">
-                            {blog.title}
+                          <td className="px-3 sm:px-4 py-3 font-medium text-xs sm:text-sm text-gray-900">
+                            <div className="max-w-xs truncate">
+                              {blog.title}
+                            </div>
                           </td>
 
                           <td className="px-3 sm:px-4 py-3 text-xs sm:text-sm text-gray-600">
@@ -262,10 +302,10 @@ const Dashboard = () => {
                           <td className="px-3 sm:px-4 py-3 text-center">
                             <button
                               onClick={() => removeBlog(blog._id)}
-                              className="text-red-600 hover:text-red-800 transition inline-flex items-center justify-center p-2 hover:bg-red-50 rounded-full cursor-pointer"
+                              className="text-red-600 hover:text-red-800 transition inline-flex items-center justify-center p-2 hover:bg-red-50 rounded-full"
                               title="Delete Blog"
                             >
-                              <Trash2 size={20} />
+                              <Trash2 size={18} />
                             </button>
                           </td>
                         </tr>

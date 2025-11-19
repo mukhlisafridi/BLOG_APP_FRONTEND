@@ -1,19 +1,41 @@
 import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { StoreContext } from "../context/StoreContext";
-import toast from "react-hot-toast";  
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const { user, logoutUser } = useContext(StoreContext);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+
   const handleLogout = () => {
     logoutUser();
     toast.success("Logged out successfully!");
-    navigate("/"); 
+    navigate("/");
+  };
+  const UserAvatar = ({ size = "w-8 h-8" }) => {
+    if (user?.image) {
+      return (
+        <img
+          src={user.image} 
+          alt={user.name}
+          className={`${size} rounded-full object-cover border-2 border-orange-400`}
+          onError={(e) => {
+            e.target.style.display = "none";
+            e.target.nextSibling.style.display = "flex";
+          }}
+        />
+      );
+    }
+    
+    return (
+      <div className={`${size} rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center border-2 border-orange-400`}>
+        <User className="text-white" size={size === "w-8 h-8" ? 16 : 20} />
+      </div>
+    );
   };
 
   return (
@@ -27,8 +49,6 @@ const Navbar = () => {
             </p>
           </div>
         </Link>
-
-        {/* Desktop Menu */}
         <ul className="hidden sm:flex gap-6 text-lg font-medium text-gray-700">
           <Link to="/" className="hover:text-orange-500 duration-300">
             Home
@@ -47,6 +67,7 @@ const Navbar = () => {
         <div className="hidden sm:flex items-center gap-3">
           {user ? (
             <>
+              <UserAvatar size="w-10 h-10" />
               <Link
                 to="/dashboard"
                 className="bg-black px-5 py-2 rounded-full text-white hover:bg-gray-800 duration-300"
@@ -54,7 +75,7 @@ const Navbar = () => {
                 Dashboard
               </Link>
               <button
-                onClick={handleLogout}  
+                onClick={handleLogout}
                 className="bg-orange-500 text-white px-5 py-2 rounded-full hover:bg-orange-600 duration-300"
               >
                 Logout
@@ -98,14 +119,13 @@ const Navbar = () => {
               transition={{ type: "tween", duration: 0.4 }}
               className="fixed top-0 right-0 h-full w-3/4 max-w-xs bg-white shadow-xl z-50 flex flex-col gap-6 p-6"
             >
-              <div className="flex justify-end">
-                <button
-                  onClick={() => setMenuOpen(false)}
-                  className="text-gray-800"
-                >
+              <div className="flex justify-between items-center border-b pb-4">
+                {user && <UserAvatar size="w-12 h-12" />}
+                <button onClick={() => setMenuOpen(false)} className="text-gray-800">
                   <X size={26} />
                 </button>
               </div>
+
               <Link
                 to="/"
                 onClick={() => setMenuOpen(false)}
@@ -134,6 +154,7 @@ const Navbar = () => {
               >
                 Contact
               </Link>
+
               {user ? (
                 <>
                   <Link
@@ -159,7 +180,7 @@ const Navbar = () => {
                   onClick={() => setMenuOpen(false)}
                   className="bg-orange-500 text-white px-6 py-2 rounded-full hover:bg-orange-600 duration-300 text-center"
                 >
-                  Signin
+                  Sign In
                 </Link>
               )}
             </motion.div>
@@ -170,4 +191,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar
+export default Navbar;

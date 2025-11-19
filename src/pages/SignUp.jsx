@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import API from "../utils/axios.js"
+import { ImageIcon } from "lucide-react";
+import API from "../utils/axios.js";
+
 const Register = () => {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -12,40 +13,58 @@ const Register = () => {
     password: "",
     image: null,
   });
+  const [imagePreview, setImagePreview] = useState(null);
 
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleImageChange = (e) => {
-    setFormData({ ...formData, image: e.target.files[0] });
+    const file = e.target.files[0];
+    if (file) {
+      setFormData({ ...formData, image: file });
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
+
   const submitHandler = async (e) => {
     e.preventDefault();
-       setLoading(true);
+    setLoading(true);
+
     try {
       const data = new FormData();
       data.append("name", formData.name);
       data.append("email", formData.email);
       data.append("password", formData.password);
       if (formData.image) {
-      data.append("image", formData.image)};
-   
-      const res = await API.post("/user/register", data);
+        data.append("image", formData.image);
+      }
+
+      const res = await API.post("/user/register", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       if (res.data.success) {
         toast.success(res.data.message);
+        navigate("/login");
       }
-      navigate("/login");
     } catch (error) {
-      console.log("Error:", error);
-      toast.error(error.message);
+      console.error("Registration Error:", error);
+      toast.error(error.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="my-12 min-h-screen flex items-center justify-center  px-4 sm:px-6">
+    <div className="my-12 min-h-screen flex items-center justify-center px-4 sm:px-6">
       <form
         onSubmit={submitHandler}
         className="w-full max-w-md sm:max-w-lg md:max-w-md p-6 sm:p-8 rounded-2xl shadow-lg bg-white"
@@ -53,20 +72,22 @@ const Register = () => {
         <h2 className="text-2xl sm:text-3xl font-bold text-center text-orange-600 mb-6">
           Register
         </h2>
-
         <div className="flex justify-center mb-6">
           <label
             htmlFor="profileImage"
             className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full border-4 border-orange-500 flex items-center justify-center cursor-pointer overflow-hidden hover:opacity-80 transition"
           >
-            {formData.image ? (
+            {imagePreview ? (
               <img
-                src={URL.createObjectURL(formData.image)}
+                src={imagePreview}
                 alt="Profile Preview"
                 className="w-full h-full object-cover rounded-full"
               />
             ) : (
-              <span className="text-gray-400 text-xs sm:text-sm">Upload</span>
+              <div className="flex flex-col items-center">
+                <ImageIcon className="text-orange-400" size={32} />
+                <span className="text-gray-400 text-xs mt-1">Upload</span>
+              </div>
             )}
             <input
               id="profileImage"
@@ -77,6 +98,7 @@ const Register = () => {
             />
           </label>
         </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-2">
             Full Name
@@ -87,6 +109,7 @@ const Register = () => {
             value={formData.name}
             onChange={onChangeHandler}
             placeholder="Enter your full name"
+            required
             className="w-full px-3 sm:px-4 py-2 border border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
           />
         </div>
@@ -99,6 +122,7 @@ const Register = () => {
             value={formData.email}
             onChange={onChangeHandler}
             placeholder="Enter your email"
+            required
             className="w-full px-3 sm:px-4 py-2 border border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
           />
         </div>
@@ -113,6 +137,7 @@ const Register = () => {
             value={formData.password}
             onChange={onChangeHandler}
             placeholder="Enter your password"
+            required
             className="w-full px-3 sm:px-4 py-2 border border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
           />
         </div>
@@ -120,14 +145,17 @@ const Register = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-orange-500 text-white font-semibold py-2 rounded-lg hover:bg-orange-600 transition duration-300 text-sm sm:text-base"
+          className="w-full bg-orange-500 text-white font-semibold py-2 sm:py-3 rounded-lg hover:bg-orange-600 transition duration-300 text-sm sm:text-base disabled:bg-orange-300 disabled:cursor-not-allowed"
         >
-          {isLoading ? "Registering...!" : "Register"}
+          {isLoading ? "Registering..." : "Register"}
         </button>
 
         <p className="text-center text-gray-600 text-sm sm:text-base mt-4">
           Already have an account?{" "}
-          <a href="/login" className="text-orange-500 font-semibold">
+          <a
+            href="/login"
+            className="text-orange-500 font-semibold hover:underline"
+          >
             Login
           </a>
         </p>
@@ -135,4 +163,5 @@ const Register = () => {
     </div>
   );
 };
+
 export default Register;
