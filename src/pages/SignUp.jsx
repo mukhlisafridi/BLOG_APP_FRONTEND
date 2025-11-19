@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import API from "../utils/axios.js"
 const Register = () => {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Register = () => {
       if (formData.image) {
       data.append("image", formData.image)};
    
-      const res = await axios.post("http://localhost:3000/user/register", data);
+      const res = await API.post("/user/register", data);
       if (res.data.success) {
         toast.success(res.data.message);
       }

@@ -2,10 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { PlusCircle, List, Trash2, ImageIcon } from "lucide-react";
-
+import API from "../utils/axios.js";
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("list");
-  const token = localStorage.getItem("token");
+  
 
   const [formData, setFormData] = useState({
     title: "",
@@ -42,11 +42,7 @@ const Dashboard = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:3000/blog/create", data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await API.post("/blog/create", data);
 
       toast.success(res.data.message);
       setBlogs([res.data.blog, ...blogs]);
@@ -64,9 +60,7 @@ const Dashboard = () => {
   useEffect(() => {
     const getUserBlogs = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/blog/user-blogs", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await API.get("/blog/user-blogs");
         setBlogs(res.data.blogs);
       } catch (error) {
         toast.error("Failed to fetch blogs");
@@ -77,12 +71,8 @@ const Dashboard = () => {
 
   const removeBlog = async (blogId) => {
     try {
-      const res = await axios.delete(
-        `http://localhost:3000/blog/delete-blog/${blogId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await API.delete(
+        `/blog/delete-blog/${blogId}`);
       toast.success(res.data.message);
       setBlogs(blogs.filter((b) => b._id !== blogId));
     } catch (error) {

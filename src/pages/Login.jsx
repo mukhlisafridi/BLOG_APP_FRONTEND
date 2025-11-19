@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { StoreContext } from "../context/StoreContext";
+import API from "../utils/axios.js"
 const Login = () => {
   const { loginUser } = useContext(StoreContext);
   const navigate = useNavigate();
@@ -21,8 +22,8 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post(
-        "http://localhost:3000/user/login",
+      const res = await API.post(
+        "/user/login",
         formData
       );
       if (res.data.success) {

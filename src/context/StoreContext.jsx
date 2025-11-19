@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import React from "react";
-import axios from "axios";
+import API from "../utils/axios.js";
 
 export const StoreContext = createContext(null);
 
@@ -11,21 +10,22 @@ const StoreContextProvider = ({ children }) => {
   useEffect(() => {
     const allBlogs = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/blog/all-blogs");
+        const res = await API.get("/blog/all-blogs");
+        
         if (res.data.success) {
           setBlogData(res.data.blogs);
         }
       } catch (error) {
-        console.error(" Error fetching blogs:", error);
+        console.error("Error fetching blogs:", error);
       }
     };
     allBlogs();
   }, []);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user")
+    const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      const userData = JSON.parse(storedUser)
+      const userData = JSON.parse(storedUser);
       setUser(userData);
     }
   }, []);
