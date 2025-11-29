@@ -23,6 +23,7 @@ const Dashboard = () => {
     const file = e.target.files[0];
     if (file) {
       setFormData({ ...formData, image: file });
+   
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
@@ -47,7 +48,7 @@ const Dashboard = () => {
     try {
       const res = await API.post("/blog/create", data, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",  
         },
       });
 
@@ -85,6 +86,7 @@ const Dashboard = () => {
       toast.error(error.response?.data?.message || "Failed to delete blog");
     }
   };
+
   const ImagePlaceholder = () => (
     <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center">
       <ImageIcon className="text-white" size={24} />
@@ -94,6 +96,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
+       
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <button
             className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold transition 
@@ -119,16 +122,14 @@ const Dashboard = () => {
             <List size={20} /> My Blogs
           </button>
         </div>
+
         {activeTab === "post" ? (
           <div className="bg-white p-6 md:p-8 shadow-lg rounded-xl">
             <h2 className="text-2xl md:text-3xl font-bold text-orange-600 mb-6">
               Post a New Blog
             </h2>
 
-            <form
-              onSubmit={submitHandler}
-              className="grid grid-cols-1 gap-5 max-w-2xl"
-            >
+            <form onSubmit={submitHandler} className="grid grid-cols-1 gap-5 max-w-2xl">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Blog Title
@@ -201,24 +202,9 @@ const Dashboard = () => {
               >
                 {loading ? (
                   <>
-                    <svg
-                      className="animate-spin h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
+                    <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
                     Posting...
                   </>
@@ -229,6 +215,7 @@ const Dashboard = () => {
             </form>
           </div>
         ) : (
+         
           <div className="bg-white p-6 md:p-8 shadow-lg rounded-xl">
             <h2 className="text-2xl md:text-3xl font-bold text-orange-600 mb-6">
               My Blogs ({blogs.length})
@@ -238,9 +225,7 @@ const Dashboard = () => {
               <div className="text-center py-12">
                 <ImageIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <p className="text-gray-500 text-lg">No blogs yet</p>
-                <p className="text-gray-400 text-sm mt-2">
-                  Create your first blog!
-                </p>
+                <p className="text-gray-400 text-sm mt-2">Create your first blog!</p>
               </div>
             ) : (
               <div className="overflow-x-auto -mx-4 sm:mx-0">
@@ -265,10 +250,7 @@ const Dashboard = () => {
 
                     <tbody>
                       {blogs.map((blog) => (
-                        <tr
-                          key={blog._id}
-                          className="hover:bg-gray-50 transition border-b"
-                        >
+                        <tr key={blog._id} className="hover:bg-gray-50 transition border-b">
                           <td className="px-3 sm:px-4 py-3">
                             {blog.image ? (
                               <img
@@ -282,17 +264,13 @@ const Dashboard = () => {
                                 }}
                               />
                             ) : null}
-                            <div
-                              style={{ display: blog.image ? "none" : "flex" }}
-                            >
+                            <div style={{ display: blog.image ? "none" : "flex" }}>
                               <ImagePlaceholder />
                             </div>
                           </td>
 
                           <td className="px-3 sm:px-4 py-3 font-medium text-xs sm:text-sm text-gray-900">
-                            <div className="max-w-xs truncate">
-                              {blog.title}
-                            </div>
+                            <div className="max-w-xs truncate">{blog.title}</div>
                           </td>
 
                           <td className="px-3 sm:px-4 py-3 text-xs sm:text-sm text-gray-600">
